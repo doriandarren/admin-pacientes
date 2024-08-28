@@ -25,7 +25,7 @@
                     id="mascota"
                     placeholder="Nombre de la mascota"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.nombre"
+                    @input="$emit('update:nombre', $event.target.value)"
                 />
             </div>
             <!-- End Input -->
@@ -44,7 +44,7 @@
                     id="propietario"
                     placeholder="Nombre del propietario"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.propietario"
+                   
                 />
 
             </div>
@@ -65,7 +65,7 @@
                     id="email"
                     placeholder="Email del propietario"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.email"
+                    
                 />
             </div>
             <!-- End Input -->
@@ -83,7 +83,7 @@
                     type="date"
                     id="alta"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.alta"
+                    
                 />
             </div>
             <!-- End Input -->
@@ -101,7 +101,7 @@
                     id="alta"
                     placeholder="Describe los síntomas"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md h-40"
-                    v-model="paciente.sintomas"
+                   
                 ></textarea>
             </div>
             <!-- End Input -->
@@ -112,8 +112,19 @@
                 value="Registrar Paciente"
             />
 
+            <div class="mt-5">
+                <Alerta 
+                    v-if="alerta.mensaje"
+                    :alerta="alerta"
+                />
+            </div>
 
         </form>
+
+        <Alerta 
+            v-if="alerta.mensaje"
+            :alerta="alerta"
+        />
 
     </div>
 </template>
@@ -123,20 +134,36 @@
 <script setup>
 
 import { reactive } from 'vue';
+import Alerta from './Alerta.vue';
 
 
-
-const paciente = reactive({
-    nombre: '',
-    propietario: '',
-    email: '',
-    alta: '',
-    sintomas: '',
+const alerta = reactive({
+    tipo: '',
+    mensaje: '',
 })
 
 
+defineEmits(['update:nombre'])
+
+const props = defineProps({
+    nombre: {
+        type: String,
+        required: true
+    }
+})
+
+
+
 const validar = () => {
-    console.log('Validando...');
+    
+    if(Object.values(paciente).includes('')){
+        alerta.mensaje = 'Todos los campos son obligatorios'
+        alerta.tipo = 'error'
+        return
+    }
+
+    console.log('Agragando...');
+
 }
 
 
