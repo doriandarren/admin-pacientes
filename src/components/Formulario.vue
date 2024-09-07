@@ -114,7 +114,7 @@
             <input 
                 type="submit"
                 class="bg-indigo-600 rounded-lg w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                value="Registrar Paciente"
+                :value="[editando ? 'Guardar cambios' : 'Registrar Paciente']"
             />
 
             <div class="mt-5">
@@ -125,11 +125,11 @@
             </div>
 
         </form>
-
-        <Alerta 
+    
+        <!-- <Alerta 
             v-if="alerta.mensaje"
             :alerta="alerta"
-        />
+        /> -->
 
     </div>
 </template>
@@ -138,7 +138,7 @@
 
 <script setup>
 
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import Alerta from './Alerta.vue';
 
 
@@ -151,6 +151,10 @@ const alerta = reactive({
 const emit = defineEmits(['update:nombre', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente'])
 
 const props = defineProps({
+    id:{
+        type: [String, null],
+        required: true
+    },
     nombre: {
         type: String,
         required: true
@@ -199,6 +203,9 @@ const validar = () => {
 }
 
 
+const editando = computed(() => {
+    return props.id
+})
 
 
 </script>
