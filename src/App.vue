@@ -1,17 +1,60 @@
 <script setup>
 import { ref, reactive } from 'vue';
+import { uid } from 'uid';
 import Header from './components/Header.vue';
 import Formulario from './components/Formulario.vue';
+import Paciente from './components/Paciente.vue';
 
 const pacientes = ref([])
 
 const paciente = reactive({
+    id: null,
+    nombre: 'Shopsuey',
+    propietario: 'Milena',
+    email: 'mile@gmail.com',
+    alta: '2024-10-10',
+    sintomas: 'No quiere comer',
+})
+
+
+// const paciente = reactive({
+//     id: null,
+//     nombre: '',
+//     propietario: '',
+//     email: '',
+//     alta: '',
+//     sintomas: '',
+// })
+
+
+const guardarPaciente = () => {
+  pacientes.value.push({
+    ...paciente,
+    id: uid()
+  })
+
+  // Una forma
+  // paciente.nombre = ''
+  // paciente.propietario = ''
+  // paciente.email = ''
+  // paciente.alta = ''
+  // paciente.sintomas = ''
+
+  //Otro forma
+  Object.assign(paciente, {
     nombre: '',
     propietario: '',
     email: '',
     alta: '',
     sintomas: '',
-})
+  })
+
+}
+
+
+const actualizarPaciente = (id) => {
+  console.log('actualizando...', id);
+}
 
 </script>
 
@@ -26,12 +69,24 @@ const paciente = reactive({
         v-model:email="paciente.email"
         v-model:alta="paciente.alta"
         v-model:sintomas="paciente.sintomas"
+        @guardar-paciente="guardarPaciente"
       />
 
       <div class="md:w-1/2 md:h-screen overflow-y-auto">
         <h3 class="font-black text-3xl text-center">Administra tus pacientes</h3>
 
         <div v-if="pacientes.length > 0">
+
+          <p class="text-lg mt-5 text-center mb-10">
+              Información de
+              <span class="text-indigo-600 font-bold">Pacientes</span>
+          </p>
+
+          <Paciente 
+            v-for="paciente in pacientes"
+            :paciente="paciente"
+            @actualizar-paciente="actualizarPaciente"
+          />
 
         </div>
         <p 
